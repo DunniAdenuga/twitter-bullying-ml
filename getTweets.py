@@ -30,10 +30,10 @@ from tweepy.parsers import JSONParser
 ####### Access Information #################
 
 # Parameter you need to specify
-consumer_key = ''
-consumer_secret = ''
-access_key = ''
-access_secret = ''
+consumer_key = 'QtJ2zFy4kMmPrJKWQpCUvlgpI'
+consumer_secret = 'CpH8C0IHlhnAI9PjWkDxYr3RUVb6rf7jspNml70vFvM4T27GbO'
+access_key = '126251520-feNdhpCqglrLDTkqp4B6UqESILVXgHO2KrLWmknD'
+access_secret = 'Z0i6VHHxeO1Xh05BIwgrvLW1ZyUFDfm4WaPEnkZq1eMNN'
 
 inputFile = 'tweet_id'
 outputFile = 'tweet.json'
@@ -47,13 +47,13 @@ l=[];
 with open(inputFile, 'r') as inFile:
 	with codecs.open(outputFile, 'w', encoding='utf8') as outFile:
 		for line in inFile.readlines():
-			l.append(line.rstrip());
-			if (len(l)>=99):
-				rst = api.statuses_lookup(id_=l);
+			l.append(line.rstrip())
+			if len(l) >= 99:
+				rst = api.statuses_lookup(id_=l)
 				for tweet in rst:
-					outFile.write(json.dumps(tweet) + "\n");
-				l=[];
-		if (len(l) > 0):
-			rst = api.statuses_lookup(id_=l);
+					outFile.write(json.dumps(tweet) + "\n")
+				l = []
+		if len(l) > 0:
+			rst = api.statuses_lookup(id_=l)
 			for tweet in rst:
-				outFile.write(json.dumps(tweet) + "\n");
+				outFile.write(json.dumps(tweet) + "\n")

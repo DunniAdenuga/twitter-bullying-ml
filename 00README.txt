@@ -27,7 +27,8 @@ Original notes
 This dataset contains data collected from Twitter stream API and labeled by 
 experienced annotators for the study of bullying in social media.  We 
 collected tweets using the public Twitter stream API, such that each tweet 
-contains at least one of the following keywords: "bully, bullied, bullying". 
+contains at least one of the following keywords: "bully, bullied, bullying".
+
 We further removed re-tweets by excluding tweets containing the acronym "RT." 
 The tweets are cased-folded and tokenized, but without any stemming or stopword removal. 
 Any user mentions preceded by a ``@'' were replaced by the anonymized user name ``@USERNAME''. 

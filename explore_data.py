@@ -8,7 +8,7 @@ from __future__ import print_function
 
 import numpy as np
 import matplotlib.pyplot as plt
-from load_data import load_tweets
+# from load_data import load_tweets
 
 from collections import Counter
 from sklearn.feature_extraction.text import CountVectorizer
@@ -143,13 +143,13 @@ def plot_class_distribution(labels):
     plt.show()
 
 
-(train_text, train_label), (test_text, test_label) = load_tweets()
+# (train_text, train_label), (test_text, test_label) = load_tweets()
 # print(train_label)
-print("Number of classes - train: " + str(get_num_classes(train_label)))
-print("Number of classes - test: " + str(get_num_classes(test_label)))
-
-print("Median number of words per sample - train: " + str(get_num_words_per_sample(train_text)))
-print("Median number of words per sample - test: " + str(get_num_words_per_sample(test_text)))
+# print("Number of classes - train: " + str(get_num_classes(train_label)))
+# print("Number of classes - test: " + str(get_num_classes(test_label)))
+#
+# print("Median number of words per sample - train: " + str(get_num_words_per_sample(train_text)))
+# print("Median number of words per sample - test: " + str(get_num_words_per_sample(test_text)))
 
 # plot_sample_length_distribution(train_text)
 # plot_sample_length_distribution(test_text)
@@ -157,5 +157,5 @@ print("Median number of words per sample - test: " + str(get_num_words_per_sampl
 # plot_class_distribution(train_label)
 # plot_class_distribution(test_label)
 
-plot_frequency_distribution_of_ngrams(train_text)
-plot_frequency_distribution_of_ngrams(test_text)
+# plot_frequency_distribution_of_ngrams(train_text)
+# plot_frequency_distribution_of_ngrams(test_text)

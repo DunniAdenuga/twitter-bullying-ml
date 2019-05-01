@@ -41,7 +41,7 @@ def tune_ngram_model(data):
                 params['layers'].append(layers)
                 params['units'].append(units)
 
-                accuracy, _ = train_ngram_model.train_ngram_model(
+                accuracy = train_ngram_model.train_ngram_model(
                     data=data,
                     layers=layers,
                     units=units)
@@ -66,6 +66,9 @@ def _plot_parameters(params):
                     params['accuracy'],
                     cmap=cm.coolwarm,
                     antialiased=False)
+    ax.set_xlabel('Layers')
+    ax.set_ylabel('Units')
+    ax.set_zlabel('Accuracy')
     plt.show()
 
 

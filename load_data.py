@@ -12,13 +12,14 @@ import json
 
 import numpy as np
 
-tweet_jsons = open('tweet.json', 'r')
-tweet_ids = open("tweet_id", "r")
+# tweet_jsons = open('tweet.json', 'r')
+# tweet_ids = open("tweet_id", "r")
 
 
-def load_tweets():
+def load_tweets(lstm_flag):
     seed = 123
-
+    tweet_jsons = open('tweet.json', 'r')
+    tweet_ids = open("tweet_id", "r")
     # training data - 80 percent
 
     train_texts = []
@@ -45,39 +46,64 @@ def load_tweets():
                 # print(tweet_cat)
                 # print(i)
                 i = i + 1
-                if i <= 3485:
-                    train_texts.append(prune_text(json_version["text"]))
-                    # print(tweet_cat)
-                    # print(str(tweet_cat).strip() == 'n'.strip())
-                    # print("\n\n")
+                if lstm_flag:
+                    max_length = 0
+                    if i <= 3485:
+                        sent_low = [w.lower() for w in prune_text(json_version["text"])]
+                        train_texts.append(sent_low)
 
-                    if str(tweet_cat).strip() == 'n'.strip():
-                        train_labels.append(0)
+                        if str(tweet_cat).strip() == 'n'.strip():
+                            train_labels+= [0]
+                        else:
+                            train_labels+= [1]
+                        max_length = max(len(sent_low), max_length)
                     else:
-                        train_labels.append(1)
+                        sent_low = [w.lower() for w in prune_text(json_version["text"])]
+                        test_texts.append(sent_low)
+                        if str(tweet_cat).strip() == 'n'.strip():
+                            test_labels+= [0]
+                        else:
+                            test_labels+= [1]
+
+                    break
                 else:
-                    test_texts.append(prune_text(json_version["text"]))
-                    if str(tweet_cat).strip() == 'n'.strip():
-                        test_labels.append(0)
-                    else:
-                        test_labels.append(1)
+                    if i <= 3485:
+                        train_texts.append(prune_text(json_version["text"]))
+                        # print(tweet_cat)
+                        # print(str(tweet_cat).strip() == 'n'.strip())
+                        # print("\n\n")
 
-                break
+                        if str(tweet_cat).strip() == 'n'.strip():
+                            train_labels.append(0)
+                        else:
+                            train_labels.append(1)
+                    else:
+                        test_texts.append(prune_text(json_version["text"]))
+                        if str(tweet_cat).strip() == 'n'.strip():
+                            test_labels.append(0)
+                        else:
+                            test_labels.append(1)
+
+                    break
 
         tweet_ids.seek(0)
 
     # Shuffle the training data and labels.
-    random.seed(seed)
-    random.shuffle(train_texts)
-    random.seed(seed)
-    random.shuffle(train_labels)
+    if not lstm_flag:
+        random.seed(seed)
+        random.shuffle(train_texts)
+        random.seed(seed)
+        random.shuffle(train_labels)
 
-    tweet_jsons.close()
-
+        tweet_jsons.close()
+        return ((train_texts, np.array(train_labels)),
+            (test_texts, np.array(test_labels)))
     # print(train_labels)
     # print(test_labels)
-    return ((train_texts, np.array(train_labels)),
-            (test_texts, np.array(test_labels)))
+    else:
+        tweet_jsons.close()
+        return ((train_texts, train_labels),
+            (test_texts, test_labels), max_length)
 
 
 def prune_text(text):

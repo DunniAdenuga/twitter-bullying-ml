@@ -12,7 +12,9 @@ from __future__ import print_function
 import argparse
 import time
 
+from sklearn.metrics import classification_report, accuracy_score
 import tensorflow as tf
+
 import numpy as np
 
 import build_model
@@ -25,7 +27,7 @@ FLAGS = None
 
 def train_ngram_model(data,
                       learning_rate=1e-3,
-                      epochs=1000,
+                      epochs=200,
                       batch_size=128,
                       layers=2,
                       units=64,
@@ -88,19 +90,24 @@ def train_ngram_model(data,
             train_labels,
             epochs=epochs,
             callbacks=callbacks,
-            validation_data=(x_val, val_labels),
+            # validation_data=(x_val, val_labels),
             verbose=2,  # Logs once per epoch.
             batch_size=batch_size)
 
     # Print results.
     history = history.history
-    print('Validation accuracy: {acc}, loss: {loss}'.format(
-            acc=history['val_acc'][-1], loss=history['val_loss'][-1]))
+    # print('Validation accuracy: {acc}, loss: {loss}'.format(acc=history['val_acc'][-1], loss=history['val_loss'][-1]))
+    predictions = model.predict(x_val)
+    predictions = [0 if i < 0.5 else 1 for i in predictions]
+    acc = accuracy_score(val_labels, predictions)
+    print("Accuracy: ", accuracy_score(val_labels, predictions))
+    print("Classification Report: ")
+    print(classification_report(val_labels, predictions))
 
     # Save model.
     model.save('model_bully')
-    return history['val_acc'][-1], history['val_loss'][-1]
-
+    # return history['val_acc'][-1], history['val_loss'][-1]
+    return acc
 
 # if __name__ == '__main__':
 #     parser = argparse.ArgumentParser()
